@@ -2,12 +2,14 @@
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
 
 const store = useAuthStore();
 
 const { authLogin } = store;
+const { isRegisterSuccess } = storeToRefs(store);
 
 const show = ref(false);
 const inputs = reactive({
@@ -45,6 +47,12 @@ const handleSubmit = async (event) => {
     class="flex flex-col justify-center items-center h-screen bg-blue-dark font-poppins"
   >
     <h1 class="font-sora text-white font-bold my-10 text-3xl">GadgetOut</h1>
+    <div
+      v-show="isRegisterSuccess"
+      class="text-green-500 bg-green-200 px-4 py-2 rounded font-medium my-5 w-4/12"
+    >
+      Congratulations! You have successfully registered.
+    </div>
     <div class="bg-white p-8 rounded shadow-md font-poppins w-4/12">
       <h2 class="text-2xl font-semibold text-center mb-1">Login</h2>
       <p class="text-center text-gray-400 text-sm mb-4">Welcome back!</p>
@@ -56,7 +64,7 @@ const handleSubmit = async (event) => {
             required
             type="email"
             name="email"
-            class="mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
+            class="bg-blue-light mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
           />
         </div>
         <div class="mb-4">
@@ -67,7 +75,7 @@ const handleSubmit = async (event) => {
             required
             :type="show ? 'text' : 'password'"
             name="password"
-            class="mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
+            class="bg-blue-light mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
           />
           <div class="flex">
             <input
@@ -91,6 +99,12 @@ const handleSubmit = async (event) => {
             ></span
           >
         </div>
+        <div
+          v-show="isError"
+          class="text-red-600 bg-[#ffe6e6] px-4 py-2 rounded font-medium mt-5"
+        >
+          {{ errorMessage }}
+        </div>
         <div class="flex justify-center mt-8">
           <button
             type="submit"
@@ -100,12 +114,6 @@ const handleSubmit = async (event) => {
             <div v-if="isSubmitting">Logging in...</div>
             <span v-else>Login</span>
           </button>
-        </div>
-        <div
-          v-show="isError"
-          class="text-red-600 bg-[#ffe6e6] px-4 py-2 rounded font-medium mt-5"
-        >
-          {{ errorMessage }}
         </div>
       </form>
     </div>
