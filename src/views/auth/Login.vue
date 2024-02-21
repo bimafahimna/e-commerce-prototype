@@ -53,6 +53,7 @@ const handleSubmit = async (event) => {
           <label for="email" class="block text-gray-700">Email</label>
           <input
             v-model="inputs.email"
+            required
             type="email"
             name="email"
             class="mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
@@ -62,6 +63,8 @@ const handleSubmit = async (event) => {
           <label for="password" class="block text-gray-700">Password</label>
           <input
             v-model="inputs.password"
+            minlength="8"
+            required
             :type="show ? 'text' : 'password'"
             name="password"
             class="mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
