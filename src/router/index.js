@@ -6,6 +6,7 @@ import TableCategory from "../views/admin/category/TableCategory.vue";
 import PaymentAdmin from "../views/admin/PaymentAdmin.vue";
 import AddCategory from "../views/admin/category/AddCategory.vue";
 import Login from "../views/auth/Login.vue";
+import Register from "../views/auth/Register.vue";
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
   },
 ];
 
