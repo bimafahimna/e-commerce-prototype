@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardUser from '../views/user/DashboardUser.vue'
 import DashboardAdmin from '../views/admin/DashboardAdmin.vue'
+import TableProduct from '../views/admin/product/TableProduct.vue'
+import TableCategory from '../views/admin/category/TableCategory.vue'
+import PaymentAdmin from '../views/admin/PaymentAdmin.vue'
+import AddCategory from '../views/admin/category/AddCategory.vue'
 
 const routes = [
     {
@@ -10,9 +14,35 @@ const routes = [
     },
     {
         path: '/admin',
-        name: 'DashboardAdmin',
+        name: 'Dashboard',
         component: DashboardAdmin
     },
+    {
+        path: '/admin/product',
+        name: 'Product',
+        component: TableProduct
+    },
+    {
+        path: '/admin/category',
+        name: 'Category',
+        component: TableCategory
+    },
+    {
+        path: '/admin/add-category',
+        name: 'AddCategory',
+        component: AddCategory
+    },
+    {
+        path: '/admin/edit-category/:id',
+        name: 'EditCategory',
+        component: AddCategory,
+        props: true
+    },
+    {
+        path: '/admin/payment',
+        name: 'Payment',
+        component: PaymentAdmin
+    }
 ]
 
 const router = createRouter({
