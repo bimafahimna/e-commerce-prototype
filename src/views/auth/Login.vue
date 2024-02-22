@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../../stores/auth";
@@ -29,7 +30,7 @@ const handleSubmit = async (event) => {
   isError.value = false;
   event.preventDefault();
 
-  let err = await authLogin(inputs);
+  const err = await authLogin(inputs);
 
   if (err) {
     isError.value = true;

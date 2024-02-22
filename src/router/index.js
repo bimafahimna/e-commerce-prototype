@@ -25,6 +25,16 @@ const routes = [
     component: TableProduct,
   },
   {
+    path: "/admin/add-product",
+    name: "AddProduct",
+    component: AddProduct,
+  },
+  {
+    path: "/admin/edit-product/:id",
+    name: "EditProduct",
+    component: AddProduct,
+  },
+  {
     path: "/admin/category",
     name: "Category",
     component: TableCategory,
@@ -38,7 +48,11 @@ const routes = [
     path: "/admin/edit-category/:id",
     name: "EditCategory",
     component: AddCategory,
-    props: true,
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
   },
   {
     path: "/admin/payment",
@@ -49,11 +63,6 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
-  },
-  {
-    path: "/register",
-    name: "Register",
-    component: Register,
   },
 ];
 

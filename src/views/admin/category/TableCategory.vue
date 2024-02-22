@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in categoryStore.category" class="bg-gray-light">
+                    <tr v-for="(item, index) in categoryStore.category" :key="item.category_id" class="bg-gray-light">
                         <td class="py-2 px-6">{{ index+1 }}</td>
                         <td class="py-2 px-6">{{ item.name }}</td>
                         <td class="flex gap-2 justify-center py-2 px-6">
@@ -29,14 +29,13 @@
 </template>
 
 <script setup>
-import AdminLayout from '../../../layouts/AdminLayout.vue';
-import router from '../../../router';
-import { useCategoryStore } from '../../../stores/category';
+import AdminLayout from '../../../layouts/AdminLayout.vue'
+import { useCategoryStore } from '../../../stores/category'
 
 const categoryStore = useCategoryStore()
 categoryStore.getCategories().then()
 
 const handleDelete = (id) => {
-    categoryStore.deleteCategory(id)
-};
+  categoryStore.deleteCategory(id)
+}
 </script>
