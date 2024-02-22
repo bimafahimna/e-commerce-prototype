@@ -32,7 +32,8 @@ const routes = [
   {
     path: '/admin/edit-product/:id',
     name: 'EditProduct',
-    component: AddProduct
+    component: AddProduct,
+    props: true
   },
   {
     path: '/admin/category',
@@ -47,7 +48,8 @@ const routes = [
   {
     path: '/admin/edit-category/:id',
     name: 'EditCategory',
-    component: AddCategory
+    component: AddCategory,
+    props: true
   },
   {
     path: '/admin/payment',
