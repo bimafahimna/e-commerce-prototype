@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardUser from '../views/user/DashboardUser.vue'
 import ChangePassword from '../views/user/ChangePassword.vue'
+import ProfileUser from '../views/user/ProfileUser.vue'
 import DashboardAdmin from '../views/admin/DashboardAdmin.vue'
 import TableProduct from '../views/admin/product/TableProduct.vue'
 import TableCategory from '../views/admin/category/TableCategory.vue'
@@ -16,6 +17,11 @@ const routes = [
     path: '/',
     name: 'DashboardUser',
     component: DashboardUser
+  },
+  {
+    path: '/profile',
+    name: 'ProfileUser',
+    component: ProfileUser
   },
   {
     path: '/profile/change-password',

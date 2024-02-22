@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useRouter } from 'vue-router'
 import AuthLayout from '../../layouts/AuthLayout.vue'
+import ErrorCard from '../../components/ErrorCard.vue'
 
 const router = useRouter()
 
@@ -55,6 +56,12 @@ const handleSubmit = async (event) => {
       <h2 class="text-2xl font-semibold text-center mb-1">Change Password</h2>
       <p class="text-center text-gray-400 text-sm mb-4">Please use strong combination for your password!</p>
       <form method="POST" @submit="handleSubmit">
+        <div class="text-blue-dark my-6">
+          <router-link to="/profile" class="hover:underline"
+            >Back to
+            <span class="font-semibold hover:underline">Profile</span>
+          </router-link>
+        </div>
         <div class="mb-4">
           <label for="oldPassword" class="block text-gray-700">Current Password</label>
           <input
@@ -105,17 +112,15 @@ const handleSubmit = async (event) => {
             class="bg-blue-light mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
           />
         </div>
-        <div
+        <ErrorCard
           v-show="isError"
-          class="text-red-600 bg-[#ffe6e6] px-4 py-2 rounded font-medium mt-5"
-        >
-          {{ errorMessage }}
-        </div>
+          :message="errorMessage"
+        />
         <div class="flex justify-center mt-8">
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover hover:text-gray-300 disabled:bg-blue-disable transition duration-300 ease-in-out"
+            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover disabled:bg-blue-disable transition duration-300 ease-in-out"
           >
             <span v-if="isSubmitting">Changing...</span>
             <span v-else>Change Password</span>

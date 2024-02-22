@@ -4,6 +4,7 @@ import { ref, reactive } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useRouter } from 'vue-router'
 import AuthLayout from '../../layouts/AuthLayout.vue'
+import ErrorCard from '../../components/ErrorCard.vue'
 
 const router = useRouter()
 
@@ -155,17 +156,12 @@ const handleSubmit = async (event) => {
             class="bg-blue-light h-24 resize-none mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
           />
         </div>
-        <div
-          v-show="isError"
-          class="text-red-600 bg-red-100 px-4 py-2 rounded font-medium mt-5"
-        >
-          {{ errorMessage }}
-        </div>
+        <ErrorCard v-show="isError" :message="errorMessage" />
         <div class="flex justify-center mt-8">
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover hover:text-gray-300 disabled:bg-blue-disable transition duration-300 ease-in-out"
+            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover disabled:bg-blue-disable transition duration-300 ease-in-out"
           >
             <span v-if="isSubmitting">Registering...</span>
             <span v-else>Register</span>

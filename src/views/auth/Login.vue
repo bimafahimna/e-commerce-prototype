@@ -1,10 +1,12 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onBeforeUnmount } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import AuthLayout from '../../layouts/AuthLayout.vue'
+import ErrorCard from '../../components/ErrorCard.vue'
+import SuccessCard from '../../components/SuccessCard.vue'
 
 const router = useRouter()
 
@@ -47,17 +49,22 @@ const handleSubmit = async (event) => {
   }
   router.push('/')
 }
+
+const closeMessage = () => {
+  isRegisterSuccess.value = false
+}
+
+onBeforeUnmount(() => {
+  isRegisterSuccess.value = false
+})
 </script>
 
 <template>
-  <AuthLayout custom-class="h-screen">
-    <div
-      v-show="isRegisterSuccess"
-      class="text-green-500 bg-green-200 px-4 py-2 rounded font-medium my-5 w-4/12"
-    >
-      Congratulations! You have successfully registered.
+  <AuthLayout custom-class="h-full">
+    <div @click="closeMessage" class="cursor-pointer w-full mb-4" v-show="isRegisterSuccess">
+      <SuccessCard message="Congratulations! You have successfully registered."/>
     </div>
-    <div class="bg-white p-8 rounded shadow-md font-poppins w-4/12">
+    <div class="bg-white p-8 rounded shadow-md font-poppins w-4/12 my-2">
       <h2 class="text-2xl font-semibold text-center mb-1">Login</h2>
       <p class="text-center text-gray-400 text-sm mb-4">Welcome back!</p>
       <form method="POST" @submit="handleSubmit">
@@ -103,17 +110,12 @@ const handleSubmit = async (event) => {
             ></span
           >
         </div>
-        <div
-          v-show="isError"
-          class="text-red-600 bg-[#ffe6e6] px-4 py-2 rounded font-medium mt-5"
-        >
-          {{ errorMessage }}
-        </div>
+        <ErrorCard v-show="isError" :message="errorMessage" />
         <div class="flex justify-center mt-8">
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover hover:text-gray-300 disabled:bg-blue-disable transition duration-300 ease-in-out"
+            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover disabled:bg-blue-disable transition duration-300 ease-in-out"
           >
             <span v-if="isSubmitting">Logging in...</span>
             <span v-else>Login</span>
