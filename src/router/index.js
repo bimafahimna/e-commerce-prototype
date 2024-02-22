@@ -1,18 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardUser from '../views/user/DashboardUser.vue'
+import ChangePassword from '../views/user/ChangePassword.vue'
 import DashboardAdmin from '../views/admin/DashboardAdmin.vue'
 import TableProduct from '../views/admin/product/TableProduct.vue'
 import TableCategory from '../views/admin/category/TableCategory.vue'
 import PaymentAdmin from '../views/admin/PaymentAdmin.vue'
 import AddCategory from '../views/admin/category/AddCategory.vue'
-import AddProduct from '../views/admin/product/AddProduct.vue'
 import Login from '../views/auth/Login.vue'
+import Register from '../views/auth/Register.vue'
 
 const routes = [
   {
     path: '/',
     name: 'DashboardUser',
     component: DashboardUser
+  },
+  {
+    path: '/profile/change-password',
+    name: 'ChangePassword',
+    component: ChangePassword
   },
   {
     path: '/admin',
@@ -50,6 +56,11 @@ const routes = [
     name: 'EditCategory',
     component: AddCategory,
     props: true
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   },
   {
     path: '/admin/payment',
