@@ -1,43 +1,44 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { ref, reactive } from "vue";
-import { useAuthStore } from "../../stores/auth";
-import { useRouter } from "vue-router";
+import { ref, reactive } from 'vue'
+import { useAuthStore } from '../../stores/auth'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
-const store = useAuthStore();
+const store = useAuthStore()
 
-const { authLogin } = store;
+const { authLogin } = store
 
-const show = ref(false);
+const show = ref(false)
 const inputs = reactive({
-  email: "",
-  password: "",
-});
-const isError = ref(false);
-const errorMessage = ref("");
-const isSubmitting = ref(false);
+  email: '',
+  password: ''
+})
+const isError = ref(false)
+const errorMessage = ref('')
+const isSubmitting = ref(false)
 
 const toggleShowPassword = () => {
-  show.value = !show.value;
-};
+  show.value = !show.value
+}
 
 const handleSubmit = async (event) => {
-  isSubmitting.value = true;
-  isError.value = false;
-  event.preventDefault();
+  isSubmitting.value = true
+  isError.value = false
+  event.preventDefault()
 
-  let err = await authLogin(inputs);
+  const err = await authLogin(inputs)
 
   if (err) {
-    isError.value = true;
-    isSubmitting.value = false;
-    errorMessage.value = err.response.data.error;
-    return;
+    isError.value = true
+    isSubmitting.value = false
+    errorMessage.value = err.response.data.error
+    return
   }
 
-  router.push("/");
-};
+  router.push('/')
+}
 </script>
 
 <template>

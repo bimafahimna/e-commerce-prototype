@@ -18,33 +18,33 @@
 </template>
 
 <script setup>
-import AdminLayout from '../../../layouts/AdminLayout.vue';
-import { useCategoryStore } from '../../../stores/category';
-import { onMounted, ref} from 'vue'
+import AdminLayout from '../../../layouts/AdminLayout.vue'
+import { useCategoryStore } from '../../../stores/category'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps(['id'])
 
-const categoryStore = useCategoryStore();
+const categoryStore = useCategoryStore()
 
 const categoryName = ref('')
 
-if(props.id){
+if (props.id) {
   onMounted(() => {
     categoryStore.getCategoryById(props.id).then(res => {
-        categoryName.value = res.name
+      categoryName.value = res.name
     })
-  });
+  })
 }
 
 const handleSubmit = () => {
-    try {
-        if(props.id) {
-            categoryStore.patchCategory(props.id, categoryName.value)
-        } else {
-            categoryStore.postCategories(categoryName.value).then(res => console.log(res))
-        }
-    } catch(error) {
-        alert(error)
+  try {
+    if (props.id) {
+      categoryStore.patchCategory(props.id, categoryName.value)
+    } else {
+      categoryStore.postCategories(categoryName.value).then(res => console.log(res))
     }
-};
+  } catch (error) {
+    alert(error)
+  }
+}
 </script>
