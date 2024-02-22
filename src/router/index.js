@@ -30,16 +30,17 @@ const routes = [
     name: 'Product',
     component: TableProduct
   },
-  // {
-  //   path: "/admin/add-product",
-  //   name: "AddProduct",
-  //   component: AddProduct,
-  // },
-  // {
-  //   path: '/admin/edit-product/:id',
-  //   name: 'EditProduct',
-  //   component: AddProduct
-  // },
+  {
+    path: '/admin/add-product',
+    name: 'AddProduct',
+    component: AddProduct
+  },
+  {
+    path: '/admin/edit-product/:id',
+    name: 'EditProduct',
+    component: AddProduct,
+    props: true
+  },
   {
     path: '/admin/category',
     name: 'Category',
@@ -53,7 +54,8 @@ const routes = [
   {
     path: '/admin/edit-category/:id',
     name: 'EditCategory',
-    component: AddCategory
+    component: AddCategory,
+    props: true
   },
   {
     path: '/register',
