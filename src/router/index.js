@@ -6,8 +6,9 @@ import TableProduct from '../views/admin/product/TableProduct.vue'
 import TableCategory from '../views/admin/category/TableCategory.vue'
 import PaymentAdmin from '../views/admin/PaymentAdmin.vue'
 import AddCategory from '../views/admin/category/AddCategory.vue'
+import AddProduct from '../views/admin/product/AddProduct.vue'
 import Login from '../views/auth/Login.vue'
-import TableCart from "../views/user/cart/TableCart.vue";
+import TableCart from '../views/user/cart/TableCart.vue'
 import Register from '../views/auth/Register.vue'
 
 const routes = [
@@ -69,16 +70,16 @@ const routes = [
     component: PaymentAdmin
   },
   {
-    path: "/login",
-    name: "Login",
-    component: Login,
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
-    path: "/cart",
-    name: "Cart",
-    component: TableCart,
-  },
-];
+    path: '/cart',
+    name: 'Cart',
+    component: TableCart
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
