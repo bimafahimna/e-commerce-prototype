@@ -6,6 +6,7 @@ import TableProduct from '../views/admin/product/TableProduct.vue'
 import TableCategory from '../views/admin/category/TableCategory.vue'
 import PaymentAdmin from '../views/admin/PaymentAdmin.vue'
 import AddCategory from '../views/admin/category/AddCategory.vue'
+import AddProduct from '../views/admin/product/AddProduct.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 
