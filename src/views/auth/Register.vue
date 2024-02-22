@@ -3,6 +3,7 @@
 import { ref, reactive } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useRouter } from 'vue-router'
+import AuthLayout from '../../layouts/AuthLayout.vue'
 
 const router = useRouter()
 
@@ -55,10 +56,7 @@ const handleSubmit = async (event) => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col justify-center items-center pb-20 bg-blue-dark font-poppins"
-  >
-    <h1 class="font-sora text-white font-bold my-10 text-3xl">GadgetOut</h1>
+  <AuthLayout>
     <div class="bg-white p-8 rounded shadow-md font-poppins w-4/12">
       <h2 class="text-2xl font-semibold text-center mb-1">Register</h2>
       <p class="text-center text-gray-400 text-sm mb-4">Come Join Us!</p>
@@ -175,7 +173,7 @@ const handleSubmit = async (event) => {
         </div>
       </form>
     </div>
-  </div>
+  </AuthLayout>
 </template>
 
 <style scoped></style>

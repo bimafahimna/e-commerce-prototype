@@ -1,53 +1,56 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { ref, reactive } from "vue";
-import { useAuthStore } from "../../stores/auth";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
+import { ref, reactive } from 'vue'
+import { useAuthStore } from '../../stores/auth'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import AuthLayout from '../../layouts/AuthLayout.vue'
 
-const router = useRouter();
+const router = useRouter()
 
-const store = useAuthStore();
+const store = useAuthStore()
 
-const { authLogin } = store;
-const { isRegisterSuccess } = storeToRefs(store);
+const { authLogin } = store
+const { isRegisterSuccess, user } = storeToRefs(store)
 
-const show = ref(false);
+const show = ref(false)
 const inputs = reactive({
-  email: "",
-  password: "",
-});
-const isError = ref(false);
-const errorMessage = ref("");
-const isSubmitting = ref(false);
+  email: '',
+  password: ''
+})
+const isError = ref(false)
+const errorMessage = ref('')
+const isSubmitting = ref(false)
 
 const toggleShowPassword = () => {
-  show.value = !show.value;
-};
+  show.value = !show.value
+}
 
 const handleSubmit = async (event) => {
-  isSubmitting.value = true;
-  isError.value = false;
-  event.preventDefault();
+  isSubmitting.value = true
+  isError.value = false
+  event.preventDefault()
 
-  const err = await authLogin(inputs);
+  const err = await authLogin(inputs)
 
   if (err) {
-    isError.value = true;
-    isSubmitting.value = false;
-    errorMessage.value = err.response.data.error;
-    return;
+    console.log(err)
+    isError.value = true
+    isSubmitting.value = false
+    errorMessage.value = err.response.data.error
+    return
   }
 
-  router.push("/");
-};
+  if (user.value.role === 'ADMIN') {
+    router.push('/admin')
+    return
+  }
+  router.push('/')
+}
 </script>
 
 <template>
-  <div
-    class="flex flex-col justify-center items-center h-screen bg-blue-dark font-poppins"
-  >
-    <h1 class="font-sora text-white font-bold my-10 text-3xl">GadgetOut</h1>
+  <AuthLayout custom-class="h-screen">
     <div
       v-show="isRegisterSuccess"
       class="text-green-500 bg-green-200 px-4 py-2 rounded font-medium my-5 w-4/12"
@@ -112,13 +115,13 @@ const handleSubmit = async (event) => {
             :disabled="isSubmitting"
             class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover hover:text-gray-300 disabled:bg-blue-disable transition duration-300 ease-in-out"
           >
-            <div v-if="isSubmitting">Logging in...</div>
+            <span v-if="isSubmitting">Logging in...</span>
             <span v-else>Login</span>
           </button>
         </div>
       </form>
     </div>
-  </div>
+  </AuthLayout>
 </template>
 
 <style scoped></style>
