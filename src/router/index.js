@@ -5,8 +5,8 @@ import TableProduct from '../views/admin/product/TableProduct.vue'
 import TableCategory from '../views/admin/category/TableCategory.vue'
 import PaymentAdmin from '../views/admin/PaymentAdmin.vue'
 import AddCategory from '../views/admin/category/AddCategory.vue'
-import AddProduct from '../views/admin/product/AddProduct.vue'
 import Login from '../views/auth/Login.vue'
+import TableCart from "../views/user/cart/TableCart.vue";
 
 const routes = [
   {
@@ -23,16 +23,6 @@ const routes = [
     path: '/admin/product',
     name: 'Product',
     component: TableProduct
-  },
-  {
-    path: '/admin/add-product',
-    name: 'AddProduct',
-    component: AddProduct
-  },
-  {
-    path: '/admin/edit-product/:id',
-    name: 'EditProduct',
-    component: AddProduct
   },
   {
     path: '/admin/category',
@@ -55,11 +45,16 @@ const routes = [
     component: PaymentAdmin
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  }
-]
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: TableCart,
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
