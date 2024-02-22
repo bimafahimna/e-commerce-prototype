@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardUser from '../views/user/DashboardUser.vue'
+import ChangePassword from '../views/user/ChangePassword.vue'
 import DashboardAdmin from '../views/admin/DashboardAdmin.vue'
 import TableProduct from '../views/admin/product/TableProduct.vue'
 import TableCategory from '../views/admin/category/TableCategory.vue'
@@ -7,12 +8,18 @@ import PaymentAdmin from '../views/admin/PaymentAdmin.vue'
 import AddCategory from '../views/admin/category/AddCategory.vue'
 import Login from '../views/auth/Login.vue'
 import TableCart from "../views/user/cart/TableCart.vue";
+import Register from '../views/auth/Register.vue'
 
 const routes = [
   {
     path: '/',
     name: 'DashboardUser',
     component: DashboardUser
+  },
+  {
+    path: '/profile/change-password',
+    name: 'ChangePassword',
+    component: ChangePassword
   },
   {
     path: '/admin',
@@ -23,6 +30,17 @@ const routes = [
     path: '/admin/product',
     name: 'Product',
     component: TableProduct
+  },
+  {
+    path: '/admin/add-product',
+    name: 'AddProduct',
+    component: AddProduct
+  },
+  {
+    path: '/admin/edit-product/:id',
+    name: 'EditProduct',
+    component: AddProduct,
+    props: true
   },
   {
     path: '/admin/category',
@@ -37,7 +55,13 @@ const routes = [
   {
     path: '/admin/edit-category/:id',
     name: 'EditCategory',
-    component: AddCategory
+    component: AddCategory,
+    props: true
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   },
   {
     path: '/admin/payment',
