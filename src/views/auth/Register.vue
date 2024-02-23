@@ -71,7 +71,7 @@ const handleSubmit = async (event) => {
           >
         </div>
         <div class="mb-4">
-          <label for="username" class="block text-gray-700">Username</label>
+          <label for="username" class="block text-gray-700">Username<span class="text-red-600">*</span></label>
           <input
             v-model="inputs.username"
             autocomplete="off"
@@ -84,7 +84,7 @@ const handleSubmit = async (event) => {
           />
         </div>
         <div class="mb-4">
-          <label for="email" class="block text-gray-700">Email</label>
+          <label for="email" class="block text-gray-700">Email<span class="text-red-600">*</span></label>
           <input
             v-model="inputs.email"
             required
@@ -94,7 +94,7 @@ const handleSubmit = async (event) => {
           />
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-gray-700">Password</label>
+          <label for="password" class="block text-gray-700">Password<span class="text-red-600">*</span></label>
           <input
             v-model="inputs.password"
             minlength="8"
@@ -119,7 +119,7 @@ const handleSubmit = async (event) => {
         </div>
         <div class="mb-4">
           <label for="confirmPassword" class="block text-gray-700"
-            >Verify Password</label
+            >Verify Password<span class="text-red-600">*</span></label
           >
           <input
             v-model="confirmationPassword"
@@ -132,7 +132,7 @@ const handleSubmit = async (event) => {
         </div>
         <div class="mb-4">
           <label for="phoneNumber" class="block text-gray-700"
-            >Phone Number</label
+            >Phone Number<span class="text-red-600">*</span></label
           >
           <input
             v-model="inputs.phoneNumber"
@@ -145,7 +145,7 @@ const handleSubmit = async (event) => {
           />
         </div>
         <div class="mb-4">
-          <label for="address" class="block text-gray-700">Address</label>
+          <label for="address" class="block text-gray-700">Address<span class="text-red-600">*</span></label>
           <textarea
             v-model="inputs.address"
             autocomplete="off"
