@@ -5,6 +5,7 @@ import { ref } from 'vue'
 import router from '../router'
 
 export const useProductStore = defineStore('product', () => {
+  const user = JSON.parse(localStorage.getItem('user'))
   const product = ref([])
   const page = ref('')
   const totalPages = ref('')
@@ -47,6 +48,11 @@ export const useProductStore = defineStore('product', () => {
   const postProduct = async (name, price, stock, discount, image_url, category_id) => {
     const res = await axios.post('https://gadgetout-products-server.vercel.app/product', {
       name, price, stock, discount, image_url, category_id
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + user.token
+      }
     })
 
     alert('Row added successfully')
@@ -58,6 +64,11 @@ export const useProductStore = defineStore('product', () => {
   const patchProduct = async (id, name, price, stock, discount, image_url, category_id) => {
     const res = await axios.patch(`https://gadgetout-products-server.vercel.app/product/${id}`, {
       name, price, stock, discount, image_url, category_id
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + user.token
+      }
     })
 
     alert('Row edited successfully')
@@ -66,7 +77,12 @@ export const useProductStore = defineStore('product', () => {
   }
 
   const deleteProduct = async (id) => {
-    await axios.delete(`https://gadgetout-products-server.vercel.app/product/${id}`)
+    await axios.delete(`https://gadgetout-products-server.vercel.app/product/${id}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + user.token
+        }
+      })
 
     alert('Row deleted successfully')
     getProducts()
