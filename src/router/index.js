@@ -12,6 +12,8 @@ import Login from '../views/auth/Login.vue'
 import TableCart from '../views/user/cart/TableCart.vue'
 import Register from '../views/auth/Register.vue'
 
+import { useAuthStore } from '../stores/auth'
+
 const routes = [
   {
     path: '/',
@@ -90,6 +92,33 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const store = useAuthStore()
+  const userLoggedIn = store.$state.user
+  const isAdmin = userLoggedIn && userLoggedIn.role === 'ADMIN'
+
+  const isGoToAdminPage = to.path.includes('/admin')
+  const isGoToProfileOrCart = to.path.includes('/profile') || to.path.includes('/cart')
+  const isGoToAuth = to.name === 'Login' || to.name === 'Register'
+
+  if (userLoggedIn && isGoToAuth) {
+    return isAdmin ? next({ name: 'Dashboard' }) : next({ name: 'DashboardUser' })
+  }
+
+  if (!isAdmin && isGoToAdminPage) {
+    return next({ name: 'DashboardUser' })
+  }
+
+  if (isAdmin && !isGoToAdminPage) {
+    return next({ name: 'Dashboard' })
+  }
+
+  if (!userLoggedIn && isGoToProfileOrCart) {
+    return next({ name: 'Login' })
+  }
+  next()
 })
 
 export default router
