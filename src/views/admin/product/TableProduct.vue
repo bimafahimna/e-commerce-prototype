@@ -37,11 +37,12 @@
             <div class="flex justify-between mt-8">
                 <p class="font-bold">Page {{ productStore.page }} of {{ productStore.totalPages }}</p>
                 <ul class="flex">
-                    <li v-if="productStore.page > 1"><button class="border-2 border-blue-dark py-2 px-4">Previous</button></li>
+                    <li v-if="productStore.page > 1" @click="fetchPage(productStore.page - 1)"><button class="border-2 border-blue-dark py-2 px-4">Previous</button></li>
                     <li><button v-for="index in productStore.totalPages"
                         :key="index"
                         class="border-2 border-blue-dark py-2 px-4"
                         @click="fetchPage(index)">{{ index }}</button></li>
+                        <li v-if="productStore.page < productStore.totalPages" @click="fetchPage(productStore.page + 1)"><button class="border-2 border-blue-dark py-2 px-4">Next</button></li>
                 </ul>
             </div>
         </div>
@@ -53,7 +54,7 @@ import AdminLayout from '../../../layouts/AdminLayout.vue'
 import { useProductStore } from '../../../stores/product'
 
 const productStore = useProductStore()
-productStore.getProducts()
+productStore.getProductByPage(1)
 
 const fetchPage = (page) => {
   productStore.getProductByPage(page)
