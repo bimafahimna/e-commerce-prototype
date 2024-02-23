@@ -8,10 +8,10 @@
             <div class="flex flex-col gap-4 mt-20 mx-auto text-center">
                 <label for="name">Category name</label>
                 <input v-model="categoryName" type="text" class="w-56 border-2 rounded p-2">
-                <button @click="handleSubmit" class="bg-yellow-400 text-white w-fit px-4 py-2 rounded mx-auto">
-                    <div v-if="props.id">Edit</div>
-                    <div v-else>Submit</div>
-                </button>
+                <div class="flex gap-2">
+                  <button v-if="!props.id" @click="handleSubmit" class="bg-yellow-400 text-white w-fit px-4 py-2 rounded mx-auto">Submit</button>
+                  <button v-if="props.id" @click="handleSubmit()" class="bg-yellow-400 text-white w-fit px-4 py-2 rounded mx-auto">Edit</button>
+                </div>
             </div>
         </div>
     </AdminLayout>
@@ -41,7 +41,7 @@ const handleSubmit = () => {
     if (props.id) {
       categoryStore.patchCategory(props.id, categoryName.value)
     } else {
-      categoryStore.postCategories(categoryName.value).then(res => console.log(res))
+      categoryStore.postCategories(categoryName.value)
     }
   } catch (error) {
     alert(error)
