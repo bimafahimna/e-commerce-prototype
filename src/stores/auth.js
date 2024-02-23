@@ -3,6 +3,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const loginUrl = `${import.meta.env.VITE_AUTH_ENDPOINT}/auth/login`
 const registerUrl = `${import.meta.env.VITE_AUTH_ENDPOINT}/auth/register`
@@ -14,6 +15,8 @@ export const useAuthStore = defineStore('auth', () => {
   const isRegisterSuccess = ref(false)
   const userProfile = ref({})
   const isChangePasswordSuccess = ref(false)
+
+  const router = useRouter()
 
   const authLogin = async (input) => {
     try {
@@ -66,5 +69,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, authLogin, isRegisterSuccess, authRegister, changePassword, isChangePasswordSuccess, userProfile, getProfile, updateProfile }
+  const handleLogout = () => {
+    user.value = null
+    localStorage.clear()
+    router.push('/login')
+  }
+
+  return { user, authLogin, isRegisterSuccess, authRegister, changePassword, isChangePasswordSuccess, userProfile, getProfile, updateProfile, handleLogout }
 })
