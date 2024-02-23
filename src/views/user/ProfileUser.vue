@@ -45,9 +45,12 @@ const handleEdit = async (event) => {
 
   if (err) {
     isError.value = true
-    isEditMode.value = false
     errorMessage.value = err.response.data.error
     isSubmitting.value = false
+    inputs.username = userProfile.value.username
+    inputs.phoneNumber = userProfile.value.phoneNumber
+    inputs.address = userProfile.value.address
+    return
   }
 
   await fetchProfile()
@@ -106,7 +109,9 @@ onBeforeUnmount(() => {
                   <label class="block text-xl text-gray-700"
                   >Password</label
                 >
-                <router-link to="/profile/change-password" class="bg-blue-dark text-center text-sm font-normal w-4/10 text-white px-3 py-1 rounded hover:bg-blue-hover hover:text-gray-300 transition duration-300 ease-in-out">Change Password</router-link>
+                <div class="w-1/2">
+                  <router-link to="/profile/change-password" class="bg-blue-dark text-center text-sm font-normal w-4/10 text-white px-3 py-1 rounded hover:bg-blue-hover hover:text-gray-300 transition duration-300 ease-in-out">Change Password</router-link>
+                </div>
               </div>
               <div class="mb-4 flex justify-between">
                   <label for="phoneNumber" class="block text-xl text-gray-700"
@@ -142,7 +147,7 @@ onBeforeUnmount(() => {
               <button v-if="!isEditMode" @click="isEditMode = true" class="bg-blue-dark text-lg block mt-5 font-semibold ml-auto text-white px-4 py-2 rounded hover:bg-blue-hover transition duration-300 ease-in-out">Edit Profile</button>
               <div v-if="isEditMode" class="flex justify-center space-x-5 mt-5 ">
                   <button :disabled="isSubmitting" @click="isEditMode = false" class="bg-red-600 text-lg block font-semibold text-white px-4 py-2 rounded hover:bg-red-800 transition duration-300 ease-in-out disabled:*:bg-red-300">Cancel</button>
-                  <button :disabled="isSubmitting" type="submit" @click="handleEdit" class="bg-blue-dark text-lg block font-semibold text-white px-4 py-2 rounded hover:bg-blue-hover transition duration-300 ease-in-out disabled:bg-blue-disable">Confirm</button>
+                  <button :disabled="isSubmitting" @click="handleEdit" class="bg-blue-dark text-lg block font-semibold text-white px-4 py-2 rounded hover:bg-blue-hover transition duration-300 ease-in-out disabled:bg-blue-disable">Confirm</button>
               </div>
         </div>
     </div>
