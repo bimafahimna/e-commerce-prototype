@@ -19,22 +19,35 @@ function toggleCategoriesFalse() {
     <div class="font-poppins">
       <header class="px-16 py-6 flex justify-between items-center bg-blue-dark">
         <div class="flex items-center gap-16">
-          <h2 class="text-white text-2xl font-semibold">GadgetOut</h2>
+          <h2
+            class="text-white text-2xl font-semibold hover:scale-125 transition-all ease-in-out duration-100"
+          >
+            <router-link to="/">GadgetOut</router-link>
+          </h2>
           <div class="flex gap-4 bg-white rounded-2xl">
             <input
               class="w-[20rem] px-6 py-4 rounded-2xl focus:outline-none"
               type="text"
               placeholder="Search"
             />
-            <button class="bg-yellow-dark text-white px-8 py-2 rounded-2xl">
+            <button
+              class="bg-yellow-dark text-white px-8 py-2 rounded-2xl hover:bg-yellow-600"
+            >
               Search
             </button>
           </div>
         </div>
         <div class="text-white flex gap-12">
-          <router-link to="/login">Login</router-link>
-          <router-link to="/register">Register</router-link>
-          <router-link to="/cart">Cart</router-link>
+          <router-link class="hover:scale-110 transition-all ease-in-out duration-100" to="/login">
+            <v-icon class="mr-2 scale-125" name="fa-regular-user" />
+            Login
+          </router-link>
+          <router-link class="hover:scale-110 transition-all ease-in-out duration-100" to="/wishlist">
+            <v-icon class="mr-2 scale-125" name="bi-heart" /> Wishlist
+          </router-link>
+          <router-link class="hover:scale-110 transition-all ease-in-out duration-100" to="/cart">
+            <v-icon class="mr-2 scale-125" name="bi-cart3" /> Cart
+          </router-link>
         </div>
       </header>
       <nav class="w-full px-16 bg-[#f4f4f4] flex justify-between items-center">
@@ -53,47 +66,22 @@ function toggleCategoriesFalse() {
               @mouseover="toggleCategoriesTrue"
               @mouseleave="toggleCategoriesFalse"
             >
+              <!-- loop categories -->
               <ul class="space-y-2">
                 <li
                   class="text-gray-dark hover:text-blue-dark hover:font-semibold"
                 >
-                  <router-link to="/">Apple</router-link>
-                </li>
-                <li
-                  class="text-gray-dark hover:text-blue-dark hover:font-semibold"
-                >
-                  <router-link to="/">Samsung</router-link>
-                </li>
-                <li
-                  class="text-gray-dark hover:text-blue-dark hover:font-semibold"
-                >
-                  <router-link to="/">Sony</router-link>
-                </li>
-                <li
-                  class="text-gray-dark hover:text-blue-dark hover:font-semibold"
-                >
-                  <router-link to="/">LG</router-link>
-                </li>
-                <li
-                  class="text-gray-dark hover:text-blue-dark hover:font-semibold"
-                >
-                  <router-link to="/">HP</router-link>
+                  <router-link to="/">Category</router-link>
                 </li>
               </ul>
             </div>
           </div>
           <ul class="flex gap-12 text-gray-dark">
             <li class="hover:text-blue-dark hover:font-semibold">
-              <router-link to="/">Home</router-link>
-            </li>
-            <li class="hover:text-blue-dark hover:font-semibold">
               <router-link to="/catalog">Catalog</router-link>
             </li>
             <li class="hover:text-blue-dark hover:font-semibold">
-              <router-link to="/blog">Blog</router-link>
-            </li>
-            <li class="hover:text-blue-dark hover:font-semibold">
-              <router-link to="/pages">Pages</router-link>
+              <router-link to="/catalog">Brands</router-link>
             </li>
             <li class="hover:text-blue-dark hover:font-semibold">
               <router-link to="/about">About us</router-link>
