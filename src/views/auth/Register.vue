@@ -1,63 +1,63 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { ref, reactive } from "vue";
-import { useAuthStore } from "../../stores/auth";
-import { useRouter } from "vue-router";
+import { ref, reactive } from 'vue'
+import { useAuthStore } from '../../stores/auth'
+import { useRouter } from 'vue-router'
+import AuthLayout from '../../layouts/AuthLayout.vue'
+import ErrorCard from '../../components/ErrorCard.vue'
 
-const router = useRouter();
+const router = useRouter()
 
-const store = useAuthStore();
+const store = useAuthStore()
 
-const { authRegister } = store;
+const { authRegister } = store
 
-const show = ref(false);
+const show = ref(false)
 const inputs = reactive({
-  username: "",
-  email: "",
-  password: "",
-  phoneNumber: "",
-  address: "",
-});
+  username: '',
+  email: '',
+  password: '',
+  phoneNumber: '',
+  address: ''
+})
 
-const confirmationPassword = ref("");
+const confirmationPassword = ref('')
 
-const isError = ref(false);
-const errorMessage = ref("");
-const isSubmitting = ref(false);
+const isError = ref(false)
+const errorMessage = ref('')
+const isSubmitting = ref(false)
 
 const toggleShowPassword = () => {
-  show.value = !show.value;
-};
+  show.value = !show.value
+}
 
 const handleSubmit = async (event) => {
-  isSubmitting.value = true;
-  isError.value = false;
-  event.preventDefault();
+  isSubmitting.value = true
+  isError.value = false
+  event.preventDefault()
 
   if (confirmationPassword.value !== inputs.password) {
-    isError.value = true;
-    isSubmitting.value = false;
-    errorMessage.value = "Oops! The passwords you entered do not match";
-    return;
+    isError.value = true
+    isSubmitting.value = false
+    errorMessage.value = 'Oops! The passwords you entered do not match'
+    return
   }
 
-  let err = await authRegister(inputs);
+  const err = await authRegister(inputs)
 
   if (err) {
-    isError.value = true;
-    isSubmitting.value = false;
-    errorMessage.value = err.response.data.error;
-    return;
+    isError.value = true
+    isSubmitting.value = false
+    errorMessage.value = err.response.data.error
+    return
   }
 
-  router.push("/login");
-};
+  router.push('/login')
+}
 </script>
 
 <template>
-  <div
-    class="flex flex-col justify-center items-center pb-10 bg-blue-dark font-poppins"
-  >
-    <h1 class="font-sora text-white font-bold my-10 text-3xl">GadgetOut</h1>
+  <AuthLayout>
     <div class="bg-white p-8 rounded shadow-md font-poppins w-4/12">
       <h2 class="text-2xl font-semibold text-center mb-1">Register</h2>
       <p class="text-center text-gray-400 text-sm mb-4">Come Join Us!</p>
@@ -71,19 +71,20 @@ const handleSubmit = async (event) => {
           >
         </div>
         <div class="mb-4">
-          <label for="username" class="block text-gray-700">Username</label>
+          <label for="username" class="block text-gray-700">Username<span class="text-red-600">*</span></label>
           <input
             v-model="inputs.username"
             autocomplete="off"
             required
-            minlength="4"
+            minlength="6"
+            maxlength="16"
             type="text"
             name="username"
             class="bg-blue-light mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
           />
         </div>
         <div class="mb-4">
-          <label for="email" class="block text-gray-700">Email</label>
+          <label for="email" class="block text-gray-700">Email<span class="text-red-600">*</span></label>
           <input
             v-model="inputs.email"
             required
@@ -93,7 +94,7 @@ const handleSubmit = async (event) => {
           />
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-gray-700">Password</label>
+          <label for="password" class="block text-gray-700">Password<span class="text-red-600">*</span></label>
           <input
             v-model="inputs.password"
             minlength="8"
@@ -118,7 +119,7 @@ const handleSubmit = async (event) => {
         </div>
         <div class="mb-4">
           <label for="confirmPassword" class="block text-gray-700"
-            >Verify Password</label
+            >Verify Password<span class="text-red-600">*</span></label
           >
           <input
             v-model="confirmationPassword"
@@ -131,7 +132,7 @@ const handleSubmit = async (event) => {
         </div>
         <div class="mb-4">
           <label for="phoneNumber" class="block text-gray-700"
-            >Phone Number</label
+            >Phone Number<span class="text-red-600">*</span></label
           >
           <input
             v-model="inputs.phoneNumber"
@@ -144,7 +145,7 @@ const handleSubmit = async (event) => {
           />
         </div>
         <div class="mb-4">
-          <label for="address" class="block text-gray-700">Address</label>
+          <label for="address" class="block text-gray-700">Address<span class="text-red-600">*</span></label>
           <textarea
             v-model="inputs.address"
             autocomplete="off"
@@ -155,25 +156,20 @@ const handleSubmit = async (event) => {
             class="bg-blue-light h-24 resize-none mt-1 px-4 py-2 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-dark focus:ring focus:ring-blue-dark focus:ring-opacity-50 outline-1 focus:outline-blue-dark"
           />
         </div>
-        <div
-          v-show="isError"
-          class="text-red-600 bg-red-100 px-4 py-2 rounded font-medium mt-5"
-        >
-          {{ errorMessage }}
-        </div>
+        <ErrorCard v-show="isError" :message="errorMessage" />
         <div class="flex justify-center mt-8">
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover hover:text-gray-300 disabled:bg-blue-disable transition duration-300 ease-in-out"
+            class="bg-blue-dark text-lg font-semibold w-full text-white px-4 py-2 rounded hover:bg-blue-hover disabled:bg-blue-disable transition duration-300 ease-in-out"
           >
-            <div v-if="isSubmitting">Registering...</div>
+            <span v-if="isSubmitting">Registering...</span>
             <span v-else>Register</span>
           </button>
         </div>
       </form>
     </div>
-  </div>
+  </AuthLayout>
 </template>
 
 <style scoped></style>

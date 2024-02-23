@@ -5,17 +5,28 @@ import router from '../router'
 
 export const useCategoryStore = defineStore('category', () => {
   const category = ref([])
+  const page = ref('')
+  const totalPages = ref('')
 
   const getCategories = async () => {
     const res = await axios.get('https://gadgetout-products-server.vercel.app/category')
 
     category.value = res.data.categories
+    page.value = res.data.page
+    totalPages.value = res.data.totalPages
   }
 
   const getCategoryById = async (id) => {
     const res = await axios.get(`https://gadgetout-products-server.vercel.app/category/${id}`)
 
     return res.data.category
+  }
+
+  const getCategoryByPage = async (page) => {
+    const res = await axios.get(`https://gadgetout-products-server.vercel.app/category?page=${page}`)
+    category.value = res.data.categories
+    page.value = res.data.page
+    totalPages.value = res.data.totalPages
   }
 
   const postCategories = async (name) => {
@@ -46,5 +57,5 @@ export const useCategoryStore = defineStore('category', () => {
     getCategories()
   }
 
-  return { category, getCategories, getCategoryById, postCategories, patchCategory, deleteCategory }
+  return { category, page, totalPages, getCategories, getCategoryById, getCategoryByPage, postCategories, patchCategory, deleteCategory }
 })
