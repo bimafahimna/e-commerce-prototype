@@ -14,8 +14,8 @@
                 <p class="font-bold text-center">Categories</p>
                 <p class="underline">See all</p>
             </div>
-            <div class="mt-4 lg:grid lg:grid-cols-6 lg:grid-flow-row flex max-w-full overflow-x-auto lg:gap-8 gap-2 scrollbar-hide">
-                <div v-for="item in categoryStore.category" :key="item" class="bg-yellow-dark text-white min-w-fit h-fit py-4 px-8 rounded-xl flex justify-center">
+            <div class="mt-4 lg:grid lg:grid-cols-6 lg:grid-flow-row flex max-w-full overflow-x-auto lg:gap-6 gap-2 scrollbar-hide">
+                <div v-for="item in categoryStore.category.slice(0,6)" :key="item" class="bg-yellow-dark text-white min-w-fit h-fit py-4 px-8 rounded-xl flex justify-center">
                     {{ item.name }}
                 </div>
             </div>
@@ -27,14 +27,17 @@
             </div>
             <div class="flex gap-4 max-w-full overflow-x-auto scrollbar-hide">
                 <!-- max 6 -->
-                <div class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
-                    <img src="https://cdn.eraspace.com/media/catalog/product/o/p/oppo_reno11_f_5g_palm_green_1.jpg" alt="" class="w-56 mx-auto">
+                <div v-for="item in productStore.newestProduct.slice(0,10)" :key="item.product_id" class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
+                    <img :src="item.image_url" :alt="item.name" class="w-56 mx-auto">
                     <div class="mt-4 text-sm">
-                        <p>OPPO Reno11 F 5G 8/256GB - Palm Green</p>
-                        <p class="font-bold my-1">Rp 2.599.000</p>
-                        <div class="flex items-center gap-1 font-bold">
-                            <p class="p-1 bg-red-600 rounded text-white">31%</p>
-                            <p class="line-through text-gray-600">Rp 4.599.000</p>
+                        <p>{{ item.name }}</p>
+                        <p v-if="!item.discount" class="font-bold my-1">Rp {{ numeral(item.price).format('0,0') }}</p>
+                        <div v-if="item.discount">
+                            <p class="font-bold my-1">Rp {{ numeral(item.price - (item.price*item.discount)).format('0,0') }}</p>
+                            <div class="flex items-center gap-1 font-bold">
+                                <p class="p-1 bg-red-600 rounded text-white">{{ item.discount * 100 }}%</p>
+                                <p class="line-through text-gray-600">{{ numeral(item.price).format('0,0') }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,14 +60,14 @@
                 <p class="underline">See all</p>
             </div>
             <div class="flex gap-4 max-w-full overflow-x-auto scrollbar-hide">
-                <div class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
-                    <img src="https://cdn.eraspace.com/media/catalog/product/o/p/oppo_reno11_f_5g_palm_green_1.jpg" alt="" class="w-56 mx-auto">
+                <div v-for="item in productStore.discountProduct.slice(0,10)" :key="item" class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
+                    <img :src="item.image_url" :alt="item.name" class="w-56 mx-auto">
                     <div class="mt-4 text-sm">
-                        <p>OPPO Reno11 F 5G 8/256GB - Palm Green</p>
-                        <p class="font-bold my-1">Rp 2.599.000</p>
+                        <p>{{ item.name }}</p>
+                        <p class="font-bold my-1">Rp {{ numeral(item.price).format('0,0') }}</p>
                         <div class="flex items-center gap-1 font-bold">
-                            <p class="p-1 bg-red-600 rounded text-white">31%</p>
-                            <p class="line-through text-gray-600">Rp 4.599.000</p>
+                            <p class="p-1 bg-red-600 rounded text-white">{{ item.discount*100 }}%</p>
+                            <p class="line-through text-gray-600">Rp {{ numeral(item.price).format('0,0') }}</p>
                         </div>
                     </div>
                 </div>
@@ -74,10 +77,14 @@
 </template>
 
 <script setup>
-
+import numeral from 'numeral'
 import { useCategoryStore } from '../../stores/category'
 import UserLayout from '../../layouts/UserLayout.vue'
+import { useProductStore } from '../../stores/product'
 
 const categoryStore = useCategoryStore()
+const productStore = useProductStore()
 categoryStore.getCategories()
+productStore.getNewestProduct()
+productStore.getDiscountProduct()
 </script>
