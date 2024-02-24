@@ -36,6 +36,13 @@ const handleSubmit = async (event) => {
   isError.value = false
   event.preventDefault()
 
+  const pattern = /^[a-zA-Z0-9]{6,16}$/
+  if (!pattern.test(inputs.username)) {
+    isError.value = true
+    isSubmitting.value = false
+    errorMessage.value = 'Username must be between 6 and 16 characters long and contain only letters (both uppercase and lowercase) and numbers'
+  }
+
   if (confirmationPassword.value !== inputs.password) {
     isError.value = true
     isSubmitting.value = false
