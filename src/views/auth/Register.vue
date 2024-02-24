@@ -57,7 +57,7 @@ const handleSubmit = async (event) => {
 </script>
 
 <template>
-  <AuthLayout>
+  <AuthLayout :is-submitting="isSubmitting">
     <div class="bg-white p-8 rounded shadow-md font-poppins w-4/12">
       <h2 class="text-2xl font-semibold text-center mb-1">Register</h2>
       <p class="text-center text-gray-400 text-sm mb-4">Come Join Us!</p>

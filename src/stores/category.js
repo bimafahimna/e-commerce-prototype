@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import router from '../router'
 
 export const useCategoryStore = defineStore('category', () => {
+  const user = JSON.parse(localStorage.getItem('user'))
   const category = ref([])
   const page = ref('')
   const totalPages = ref('')
@@ -30,9 +31,12 @@ export const useCategoryStore = defineStore('category', () => {
   }
 
   const postCategories = async (name) => {
-    const res = await axios.post('https://gadgetout-products-server.vercel.app/category', {
-      name
-    })
+    const res = await axios.post('https://gadgetout-products-server.vercel.app/category', { name },
+      {
+        headers: {
+          Authorization: 'Bearer ' + user.token
+        }
+      })
 
     alert('Row added successfully')
     router.push('/admin/category')
@@ -41,9 +45,12 @@ export const useCategoryStore = defineStore('category', () => {
   }
 
   const patchCategory = async (id, name) => {
-    const res = await axios.patch(`https://gadgetout-products-server.vercel.app/category/${id}`, {
-      name
-    })
+    const res = await axios.patch(`https://gadgetout-products-server.vercel.app/category/${id}`, { name },
+      {
+        headers: {
+          Authorization: 'Bearer ' + user.token
+        }
+      })
 
     alert('Row edited successfully')
     router.push('/admin/category')
@@ -51,7 +58,12 @@ export const useCategoryStore = defineStore('category', () => {
   }
 
   const deleteCategory = async (id) => {
-    await axios.delete(`https://gadgetout-products-server.vercel.app/category/${id}`)
+    await axios.delete(`https://gadgetout-products-server.vercel.app/category/${id}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + user.token
+        }
+      })
 
     alert('Row deleted successfully')
     getCategories()

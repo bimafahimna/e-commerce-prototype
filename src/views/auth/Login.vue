@@ -36,7 +36,6 @@ const handleSubmit = async (event) => {
   const err = await authLogin(inputs)
 
   if (err) {
-    console.log(err)
     isError.value = true
     isSubmitting.value = false
     errorMessage.value = err.response.data.error
@@ -60,7 +59,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <AuthLayout custom-class="h-full">
+  <AuthLayout custom-class="h-full" :is-submitting="isSubmitting">
     <div @click="closeMessage" class="cursor-pointer w-full mb-4" v-show="isRegisterSuccess">
       <SuccessCard message="Congratulations! You have successfully registered."/>
     </div>
