@@ -36,10 +36,17 @@ onMounted(async () => {
   inputs.address = userProfile.value.address
 })
 
-const handleEdit = async (event) => {
+const handleEdit = async () => {
   isSubmitting.value = true
   isError.value = false
-  event.preventDefault()
+
+  const pattern = /^[a-zA-Z0-9]{6,16}$/
+  if (!pattern.test(inputs.username)) {
+    isError.value = true
+    isSubmitting.value = false
+    errorMessage.value = 'Username must be between 6 and 16 characters long and contain only letters (both uppercase and lowercase) and numbers'
+    return
+  }
 
   const err = await updateProfile(inputs)
 
@@ -73,11 +80,9 @@ onBeforeUnmount(() => {
         <div @click="closeMessage" v-show="isChangePasswordSuccess" class="cursor-pointer mb-4">
           <SuccessCard  message="Your password changed successfully."/>
         </div>
-        <div class="bg-white text-gray-700 rounded-lg shadow-md mx-auto w-3/4 p-6 mt-8">
+        <div class="bg-white text-gray-700 rounded-lg shadow-md mx-auto w-3/4 py-6 px-8 mt-8">
               <div class="mb-4 flex justify-between">
-                  <label for="username" class="block text-xl text-gray-700"
-                  >Username</label
-                >
+                <v-icon scale="2" name="fa-user"/>
                 <input
                   :disabled="!isEditMode || isSubmitting"
                   :class="{pulse: !Boolean(userProfile.username) || isSubmitting}"
@@ -92,9 +97,7 @@ onBeforeUnmount(() => {
                 />
               </div>
               <div class="mb-4 flex justify-between">
-                  <label for="email" class="block text-xl text-gray-700"
-                  >Email</label
-                >
+                <v-icon scale="2" name="io-mail" />
                 <input
                   disabled
                   :class="{pulse: !Boolean(userProfile.email)}"
@@ -106,17 +109,13 @@ onBeforeUnmount(() => {
                 />
               </div>
               <div class="mb-4 flex justify-between">
-                  <label class="block text-xl text-gray-700"
-                  >Password</label
-                >
+                <v-icon scale="2" name="md-password" />
                 <div class="w-1/2">
                   <router-link to="/profile/change-password" class="bg-blue-dark text-center text-sm font-normal w-4/10 text-white px-3 py-1 rounded hover:bg-blue-hover hover:text-gray-300 transition duration-300 ease-in-out">Change Password</router-link>
                 </div>
               </div>
               <div class="mb-4 flex justify-between">
-                  <label for="phoneNumber" class="block text-xl text-gray-700"
-                  >Phone Number</label
-                >
+                <v-icon scale="2" name="bi-telephone-fill" />
                 <input
                   :disabled="!isEditMode || isSubmitting"
                   :class="{pulse: !Boolean(userProfile.phoneNumber) || isSubmitting}"
@@ -130,7 +129,7 @@ onBeforeUnmount(() => {
                 />
               </div>
               <div class="mb-4 flex justify-between">
-                <label for="address" class="block text-xl text-gray-700">Address</label>
+                <v-icon scale="2" name="fa-map-marked-alt" />
                 <textarea
                   :disabled="!isEditMode || isSubmitting"
                   :class="{pulse: !Boolean(userProfile.address) || isSubmitting}"
