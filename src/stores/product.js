@@ -10,6 +10,8 @@ export const useProductStore = defineStore('product', () => {
   const page = ref('')
   const totalPages = ref('')
   const limitedStock = ref([])
+  const newestProduct = ref([])
+  const discountProduct = ref([])
 
   const getProducts = async () => {
     const res = await axios.get('https://gadgetout-products-server.vercel.app/product')
@@ -43,6 +45,18 @@ export const useProductStore = defineStore('product', () => {
     const res = await axios.get('https://gadgetout-products-server.vercel.app/product?sort=stock')
 
     limitedStock.value = res.data.products
+  }
+
+  const getNewestProduct = async () => {
+    const res = await axios.get('https://gadgetout-products-server.vercel.app/product?sort=new')
+
+    newestProduct.value = res.data.products
+  }
+
+  const getDiscountProduct = async () => {
+    const res = await axios.get('https://gadgetout-products-server.vercel.app/product?sort=discount')
+
+    discountProduct.value = res.data.products
   }
 
   const postProduct = async (name, price, stock, discount, image_url, category_id) => {
@@ -88,5 +102,22 @@ export const useProductStore = defineStore('product', () => {
     getProducts()
   }
 
-  return { product, page, totalPages, limitedStock, getProducts, getProductById, getProductByPage, searchProduct, getLimitedStock, postProduct, patchProduct, deleteProduct }
+  return {
+    product,
+    page,
+    totalPages,
+    limitedStock,
+    newestProduct,
+    discountProduct,
+    getProducts,
+    getProductById,
+    getProductByPage,
+    searchProduct,
+    getLimitedStock,
+    getNewestProduct,
+    getDiscountProduct,
+    postProduct,
+    patchProduct,
+    deleteProduct
+  }
 })
