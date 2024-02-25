@@ -29,9 +29,12 @@
                 <input v-model="product.discount" type="number" class="w-full border-2 rounded p-2" placeholder="0,1 for 10%">
               </div>
               <div>
-                <p class="font-bold">Image URL</p>
-                <img :src="product.image_url" :alt="product.name" class="w-40">
-                <input v-model="product.image_url" type="text" class="w-full border-2 rounded p-2">
+                <p class="font-bold mb-2">Product Image</p>
+                <div v-if="!product.image_url" class="relative mx-auto w-32 h-32 bg-blue-300 hover:bg-blue-400 rounded-lg flex items-center justify-center overflow-hidden">
+                  <input type="file" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" @input="uploadImage" accept="image/png" />
+                  <v-icon scale="1.5" name="hi-upload" />
+                </div>
+                <img v-else  class="relative mx-auto w-32 h-32  rounded-lg flex items-center justify-center overflow-hidden" :src="product.image_url" :alt="product.name">
               </div>
                 <button @click="handleSubmit" class="bg-yellow-400 text-white w-fit px-4 py-2 rounded mx-auto">
                     <div v-if="props.id">Edit</div>
@@ -47,11 +50,15 @@ import AdminLayout from '../../../layouts/AdminLayout.vue'
 import { useProductStore } from '../../../stores/product'
 import { useCategoryStore } from '../../../stores/category'
 import { onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { supabase } from '../../../lib/supabaseClient'
 
 const props = defineProps(['id'])
 
 const productStore = useProductStore()
 const categoryStore = useCategoryStore()
+
+const { category } = storeToRefs(categoryStore)
 
 const product = ref({
   name: '',
@@ -102,5 +109,32 @@ const handleSubmit = () => {
 
 onMounted(() => {
   categoryStore.getCategories()
+  console.log(categoryStore.category)
 })
+
+const uploadImage = async (e) => {
+  const file = e.target.files[0]
+  if (!file) {
+    alert('Invalid file')
+    return
+  }
+
+  if (!product.value.category_id) {
+    alert('Pick one category pleases')
+    return
+  }
+
+  const selectedCategory = category.value.find(item => item.category_id === product.value.category_id)
+
+  const { data, error } = await supabase
+    .storage
+    .from('products')
+    .upload('Public' + '/' + selectedCategory.name + '/' + `product_${Date.now()}.png`, file)
+  if (error) {
+    console.log(error)
+    alert(error)
+    return
+  }
+  product.value.image_url = `https://oiuykrvppcybmwgvjeys.supabase.co/storage/v1/object/public/${data.fullPath}`
+}
 </script>
