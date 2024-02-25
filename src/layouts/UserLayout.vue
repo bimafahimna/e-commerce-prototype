@@ -1,15 +1,15 @@
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
 
-const role = ref("user");
-const showCategories = ref(false);
+const role = ref('user')
+const showCategories = ref(false)
 
-function toggleCategoriesTrue() {
-  showCategories.value = true;
+function toggleCategoriesTrue () {
+  showCategories.value = true
 }
 
-function toggleCategoriesFalse() {
-  showCategories.value = false;
+function toggleCategoriesFalse () {
+  showCategories.value = false
 }
 </script>
 
@@ -78,7 +78,7 @@ function toggleCategoriesFalse() {
           </div>
           <ul class="flex gap-12 text-gray-dark">
             <li class="hover:text-blue-dark hover:font-semibold">
-              <router-link to="/catalog">Catalog</router-link>
+              <router-link :to="{name: 'Catalog'}">Catalog</router-link>
             </li>
             <li class="hover:text-blue-dark hover:font-semibold">
               <router-link to="/catalog">Brands</router-link>

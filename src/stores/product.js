@@ -35,6 +35,14 @@ export const useProductStore = defineStore('product', () => {
     totalPages.value = res.data.totalPages
   }
 
+  const getProductByPageUser = async (pageNumber) => {
+    const res = await axios.get(`https://gadgetout-products-server.vercel.app/product?page=${pageNumber}&pageSize=8`)
+
+    product.value = res.data.products
+    page.value = res.data.page
+    totalPages.value = res.data.totalPages
+  }
+
   const searchProduct = async (query) => {
     const res = await axios.get(`https://gadgetout-products-server.vercel.app/product?search=${query}`)
 
@@ -112,6 +120,7 @@ export const useProductStore = defineStore('product', () => {
     getProducts,
     getProductById,
     getProductByPage,
+    getProductByPageUser,
     searchProduct,
     getLimitedStock,
     getNewestProduct,
