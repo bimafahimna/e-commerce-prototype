@@ -79,36 +79,41 @@
                 </div>
             </div>
             <div class="col-span-3">
-                <p class="mb-6">Page {{ productStore.page }} of {{ productStore.totalPages }} for <b>All Products</b></p>
-                <div class="grid grid-cols-4 grid-flow-row gap-4">
-                    <!-- products -->
-                    <div v-for="item in productStore.product" :key="item" class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
-                        <img :src="item.image_url" :alt="item.name" class="w-56 mx-auto">
-                        <div class="mt-4 text-sm">
-                            <p>{{ item.name }}</p>
-                            <p v-if="!item.discount" class="font-bold my-1">Rp {{ numeral(item.price).format('0,0') }}</p>
-                            <div v-if="item.discount">
-                                <p class="font-bold my-1">Rp {{ numeral(item.price - (item.price*item.discount)).format('0,0') }}</p>
-                                <div class="flex items-center gap-1 font-bold">
-                                    <p class="p-1 bg-red-600 rounded text-white">{{ item.discount * 100 }}%</p>
-                                    <p class="line-through text-gray-600">{{ numeral(item.price).format('0,0') }}</p>
+                <p class="mb-6">Page {{ categoryStore.page }} of {{ categoryStore.totalPages }} for <b>{{ categoryStore.categoryProduct.name }}</b></p>
+                <div v-if="categoryStore.itemCategoryProduct">
+                    <div class="grid grid-cols-4 grid-flow-row gap-4">
+                        <!-- products -->
+                        <div v-for="item in categoryStore.itemCategoryProduct" :key="item" class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
+                            <img :src="item.image_url" :alt="item.name" class="w-56 mx-auto">
+                            <div class="mt-4 text-sm">
+                                <p>{{ item.name }}</p>
+                                <p v-if="!item.discount" class="font-bold my-1">Rp {{ numeral(item.price).format('0,0') }}</p>
+                                <div v-if="item.discount">
+                                    <p class="font-bold my-1">Rp {{ numeral(item.price - (item.price*item.discount)).format('0,0') }}</p>
+                                    <div class="flex items-center gap-1 font-bold">
+                                        <p class="p-1 bg-red-600 rounded text-white">{{ item.discount * 100 }}%</p>
+                                        <p class="line-through text-gray-600">{{ numeral(item.price).format('0,0') }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="flex justify-center mt-10">
+                        <ul v-for="n in categoryStore.totalPages" :key="n">
+                            <li v-if="shouldDisplay(n)" :key="n">
+                                <button
+                                @click="fetchPage(n)"
+                                :class="{ 'border-b-2': n === categoryStore.page }"
+                                class="py-2 px-4"
+                                >
+                                {{ n }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="flex justify-center mt-10">
-                    <ul v-for="n in productStore.totalPages" :key="n">
-                        <li v-if="shouldDisplay(n)" :key="n">
-                            <button
-                            @click="fetchPage(n)"
-                            :class="{ 'border-b-2': n === productStore.page }"
-                            class="py-2 px-4"
-                            >
-                            {{ n }}
-                            </button>
-                        </li>
-                    </ul>
+                <div v-else>
+                    <p class="flex justify-center p-4 bg-red-300 rounded-xl font-bold">Product does not exist in this category</p>
                 </div>
             </div>
         </div>
@@ -117,36 +122,36 @@
 
 <script setup>
 import numeral from 'numeral'
-import { ref } from 'vue'
 import UserLayout from '../../layouts/UserLayout.vue'
 import { useCategoryStore } from '../../stores/category'
-import { useProductStore } from '../../stores/product'
+import { ref } from 'vue'
+
+const props = defineProps(['id'])
 
 const showDiscount = ref(true)
 const showCategory = ref(true)
 const showBrand = ref(true)
 const showSort = ref(true)
 
-const categoryStore = useCategoryStore()
-const productStore = useProductStore()
-categoryStore.getCategories()
-productStore.getProductByPageUser(1)
-
-const shouldDisplay = (n) => {
-  if (productStore.page <= 2) {
-    return n <= 3
-  } else if (productStore.page >= productStore.totalPages - 1) {
-    return n > productStore.totalPages - 3
-  } else {
-    return Math.abs(productStore.page - n) <= 1
-  }
-}
-
 const filterCategory = ref('')
 const filterSort = ref('')
 const filterDiscount = ref('')
 
+const categoryStore = useCategoryStore()
+categoryStore.getCategoryById(props.id, 1)
+categoryStore.getCategories()
+
+const shouldDisplay = (n) => {
+  if (categoryStore.page <= 2) {
+    return n <= 3
+  } else if (categoryStore.page >= categoryStore.totalPages - 1) {
+    return n > categoryStore.totalPages - 3
+  } else {
+    return Math.abs(categoryStore.page - n) <= 1
+  }
+}
+
 const fetchPage = (page) => {
-  productStore.getProductByPageUser(page)
+  categoryStore.getCategoryById(props.id, page)
 }
 </script>

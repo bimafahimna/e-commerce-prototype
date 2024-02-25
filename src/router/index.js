@@ -12,6 +12,7 @@ import Login from '../views/auth/Login.vue'
 import TableCart from '../views/user/cart/TableCart.vue'
 import Register from '../views/auth/Register.vue'
 import Catalog from '../views/user/CatalogUser.vue'
+import CategoryProduct from '../views/user/CategoryProduct.vue'
 
 import { useAuthStore } from '../stores/auth'
 
@@ -92,6 +93,12 @@ const routes = [
     path: '/catalog',
     name: 'Catalog',
     component: Catalog
+  },
+  {
+    path: '/catalog/:id',
+    name: 'CategoryProduct',
+    component: CategoryProduct,
+    props: true
   }
 ]
 
