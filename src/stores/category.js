@@ -6,6 +6,8 @@ import router from '../router'
 export const useCategoryStore = defineStore('category', () => {
   const user = JSON.parse(localStorage.getItem('user'))
   const category = ref([])
+  const categoryProduct = ref([])
+  const itemCategoryProduct = ref([])
   const page = ref('')
   const totalPages = ref('')
 
@@ -17,17 +19,18 @@ export const useCategoryStore = defineStore('category', () => {
     totalPages.value = res.data.totalPages
   }
 
-  const getCategoryById = async (id) => {
-    const res = await axios.get(`https://gadgetout-products-server.vercel.app/category/${id}`)
+  const getCategoryById = async (id, pageNumber) => {
+    const res = await axios.get(`https://gadgetout-products-server.vercel.app/category/${id}?page=${pageNumber}&pageSize=8`)
 
-    return res.data.category
+    categoryProduct.value = res.data.category
+    itemCategoryProduct.value = res.data.category.Products
+    page.value = res.data.category.page
+    totalPages.value = res.data.category.totalPages
   }
 
-  const getCategoryByPage = async (page) => {
-    const res = await axios.get(`https://gadgetout-products-server.vercel.app/category?page=${page}`)
-    category.value = res.data.categories
-    page.value = res.data.page
-    totalPages.value = res.data.totalPages
+  const getCategoryByPage = async (pageNumber) => {
+    const res = await axios.get(`https://gadgetout-products-server.vercel.app/category?page=${pageNumber}`)
+    category.value = res.data.category
   }
 
   const postCategories = async (name) => {
@@ -69,5 +72,5 @@ export const useCategoryStore = defineStore('category', () => {
     getCategories()
   }
 
-  return { category, page, totalPages, getCategories, getCategoryById, getCategoryByPage, postCategories, patchCategory, deleteCategory }
+  return { category, categoryProduct, itemCategoryProduct, page, totalPages, getCategories, getCategoryById, getCategoryByPage, postCategories, patchCategory, deleteCategory }
 })

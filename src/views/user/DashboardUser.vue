@@ -15,8 +15,12 @@
                 <p class="underline">See all</p>
             </div>
             <div class="mt-4 lg:grid lg:grid-cols-6 lg:grid-flow-row flex max-w-full overflow-x-auto lg:gap-6 gap-2 scrollbar-hide">
-                <div v-for="item in categoryStore.category.slice(0,6)" :key="item" class="bg-yellow-dark text-white min-w-fit h-fit py-4 px-8 rounded-xl flex justify-center">
-                    {{ item.name }}
+                <div v-for="item in categoryStore.category.slice(0,6)" :key="item.category_id">
+                    <RouterLink :to="{ name: 'CategoryProduct', params:{id:item.category_id}}">
+                        <div class="bg-yellow-dark text-white min-w-fit h-fit py-4 px-8 rounded-xl flex justify-center">
+                            {{ item.name }}
+                        </div>
+                    </RouterLink>
                 </div>
             </div>
         </div>
