@@ -15,6 +15,8 @@ import Catalog from '../views/user/CatalogUser.vue'
 import CategoryProduct from '../views/user/CategoryProduct.vue'
 
 import { useAuthStore } from '../stores/auth'
+import { usePaymentStore } from '../stores/payment'
+import { storeToRefs } from 'pinia'
 
 const routes = [
   {
@@ -99,7 +101,17 @@ const routes = [
     name: 'CategoryProduct',
     component: CategoryProduct,
     props: true
-  }
+  },
+  {
+    path: '/payment',
+    name: 'PaymentUser',
+    component: () => import('../views/user/payment/PaymentUser.vue')
+  },
+  {
+    path: '/payment/success',
+    name: 'PaymentUserSuccess',
+    component: () => import('../views/user/payment/PaymentSuccess.vue')
+  },
 ]
 
 const router = createRouter({
@@ -108,6 +120,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // Payment
+  const paymentStore = usePaymentStore()
+  const { isPaymentCreated } = storeToRefs(paymentStore)
+
+  const isGoToPaymentSuccess = to.name === "PaymentUserSuccess"
+
+  // Auth
   const store = useAuthStore()
   const userLoggedIn = store.$state.user
   const isAdmin = userLoggedIn && userLoggedIn.role === 'ADMIN'
@@ -131,6 +150,11 @@ router.beforeEach((to, from, next) => {
   if (!userLoggedIn && isGoToProfileOrCart) {
     return next({ name: 'Login' })
   }
+
+  if (!isPaymentCreated.value && isGoToPaymentSuccess ) {
+    return next({ name: 'Cart'})
+  }
+
   next()
 })
 
