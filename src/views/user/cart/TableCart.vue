@@ -1,6 +1,14 @@
 <script setup>
 import UserLayout from "../../../layouts/UserLayout.vue";
 import CartItems from "../../../components/Cart/CartItems.vue";
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goToPaymentPage = async () => {
+  router.push('/payment')
+}
+
 </script>
 
 <template>
@@ -101,6 +109,7 @@ import CartItems from "../../../components/Cart/CartItems.vue";
             </div>
             <div class="py-8 flex justify-center">
               <button
+                @click="goToPaymentPage"
                 class="px-6 py-2 w-full border border-1 rounded-full bg-yellow-dark text-[#fdfdfd] font-medium"
               >
                 Proceed to Checkout
