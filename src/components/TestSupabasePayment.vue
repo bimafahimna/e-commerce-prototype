@@ -18,14 +18,14 @@ const uploadImage = async (e) => {
 
   const { data, error } = await supabasePayment
     .storage
-    .from('Payment')
+    .from('payment-confirmation')
     .upload('payment' + '/' + user.value.username + '/' + `payment_${user.value.username}_${Date.now()}.png`, file)
   if (error) {
     console.log(error)
     alert(error)
     return
   }
-  imageUrl.value = `https://ioaitethwltkenlmljex.supabase.co/storage/v1/object/public/${data.fullPath}`
+  imageUrl.value = `https://bemhvbakalhcklhasakn.supabase.co/storage/v1/object/public/${data.fullPath}`
 }
 
 </script>
