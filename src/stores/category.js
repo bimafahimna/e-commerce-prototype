@@ -22,10 +22,10 @@ export const useCategoryStore = defineStore('category', () => {
   const getCategoryById = async (id, pageNumber) => {
     const res = await axios.get(`https://gadgetout-products-server.vercel.app/category/${id}?page=${pageNumber}&pageSize=8`)
 
-    categoryProduct.value = res.data.category
-    itemCategoryProduct.value = res.data.category.Products
     page.value = res.data.category.page
     totalPages.value = res.data.category.totalPages
+    categoryProduct.value = res.data.category
+    itemCategoryProduct.value = res.data.category.Products
   }
 
   const getCategoryByPage = async (pageNumber) => {

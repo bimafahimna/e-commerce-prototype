@@ -9,9 +9,9 @@
                     <div v-for="item in paymentStore.payments" :key="item.payment_id" class="flex justify-between items-center gap-2 mt-6 bg-blue-dark/50 border-t-2 border-l-2 border-white/50 text-white rounded-xl p-6 shadow-lg h-fit">
                         <div>
                             <p class="text-sm mb-8">Order ID: {{ item.payment_id }}</p>
-                            <p>Username: {{ item.user_id }}</p>
+                            <p>Username: {{ item.username }}</p>
                             <p>Paid using: {{ item.payment_option }}</p>
-                            <p>Total: Rp {{ item.total_payment }}</p>
+                            <p>Total: Rp {{ item.total_price }}</p>
                             <p class="font-bold mt-8">{{ item.payment_date }}</p>
                         </div>
                         <div class="text-center">
@@ -38,7 +38,12 @@
                                 <div class="relative w-full max-w-md mx-auto rounded-lg bg-white shadow-xl">
                                     <div class="px-6 py-4">
                                         <div class="px-4 pb-4 pt-5">
-                                            img
+                                            <div v-if="item.confirmation">
+                                                <img :src="item.confirmation" :alt="item.payment_id">
+                                            </div>
+                                            <div>
+                                                <p>Confirmation image does not exist</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 px-6 py-3 flex justify-end">
@@ -72,7 +77,7 @@ const productStore = useProductStore()
 productStore.getLimitedStock()
 
 const paymentStore = usePaymentStore()
-paymentStore.getPayments()
+paymentStore.getAllPaymentByAdmin()
 
 const showImage = ref(false)
 </script>

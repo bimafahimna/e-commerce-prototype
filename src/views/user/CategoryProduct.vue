@@ -15,27 +15,8 @@
                             </div>
                         </div>
                         <div v-if="showDiscount" class="flex items-center gap-1 px-6 pb-2">
-                            <input v-model="filterDiscount" value="discount" id="discount" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <input v-model="query.filterDiscount" value="discount" id="discount" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                             <label for="discount" class="text-sm">Product on Discount</label>
-                        </div>
-                    </div>
-                    <div>
-                        <div @click="showCategory = !showCategory" class="flex justify-between p-2">
-                            <p class="text-sm font-bold">Category</p>
-                            <div v-if="showCategory">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z" clip-rule="evenodd" /></svg>
-                            </div>
-                            <div v-if="!showCategory">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
-                            </div>
-                        </div>
-                        <div v-if="showCategory" class="px-6 pb-2">
-                            <div v-for="item in categoryStore.category" :key="item">
-                            <div class="flex items-center gap-1 mb-2">
-                                    <input id="category" v-model="filterCategory" :value="item.category_id" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                                    <label for="category" class="text-sm">{{ item.name }}</label>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div>
@@ -67,11 +48,11 @@
                         </div>
                         <div v-if="showSort" class="px-6 pb-2">
                             <div class="flex items-center gap-1 mb-2">
-                                <input v-model="filterSort" value="desc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                <input v-model="query.filterSort" value="desc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                                 <label for="sort" class="text-sm">Newest</label>
                             </div>
                             <div class="flex items-center gap-1 mb-2">
-                                <input v-model="filterSort" value="asc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                <input v-model="query.filterSort" value="asc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                                 <label for="sort" class="text-sm">Oldest</label>
                             </div>
                         </div>
@@ -80,7 +61,7 @@
             </div>
             <div class="col-span-3">
                 <p class="mb-6">Page {{ categoryStore.page }} of {{ categoryStore.totalPages }} for <b>{{ categoryStore.categoryProduct.name }}</b></p>
-                <div v-if="categoryStore.itemCategoryProduct">
+                <div v-if="categoryStore.itemCategoryProduct.length > 0">
                     <div class="grid grid-cols-4 grid-flow-row gap-4">
                         <!-- products -->
                         <div v-for="item in categoryStore.itemCategoryProduct" :key="item" class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
@@ -112,7 +93,7 @@
                         </ul>
                     </div>
                 </div>
-                <div v-else>
+                <div v-if="categoryStore.itemCategoryProduct.length === 0">
                     <p class="flex justify-center p-4 bg-red-300 rounded-xl font-bold">Product does not exist in this category</p>
                 </div>
             </div>
@@ -124,22 +105,32 @@
 import numeral from 'numeral'
 import UserLayout from '../../layouts/UserLayout.vue'
 import { useCategoryStore } from '../../stores/category'
-import { ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 
 const props = defineProps(['id'])
 
 const showDiscount = ref(true)
-const showCategory = ref(true)
 const showBrand = ref(true)
 const showSort = ref(true)
 
-const filterCategory = ref('')
-const filterSort = ref('')
-const filterDiscount = ref('')
+const query = ref({
+  filterSort: '',
+  filterDiscount: ''
+})
 
 const categoryStore = useCategoryStore()
-categoryStore.getCategoryById(props.id, 1)
 categoryStore.getCategories()
+
+const filterProduct = async () => {
+  let queryString = ''
+  if (query.value.filterDiscount) {
+    queryString += `filter=${query.value.filterDiscount}&`
+  }
+  if (query.value.filterSort) {
+    queryString += `sort=${query.value.filterSort}`
+  }
+  console.log(queryString)
+}
 
 const shouldDisplay = (n) => {
   if (categoryStore.page <= 2) {
@@ -154,4 +145,12 @@ const shouldDisplay = (n) => {
 const fetchPage = (page) => {
   categoryStore.getCategoryById(props.id, page)
 }
+
+onMounted(() => {
+  categoryStore.getCategoryById(props.id, categoryStore.page)
+})
+
+watchEffect(() => {
+  filterProduct()
+})
 </script>
