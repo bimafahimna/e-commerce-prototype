@@ -79,7 +79,8 @@
                 </div>
             </div>
             <div class="col-span-3">
-                <p class="mb-6">Page {{ productStore.page }} of {{ productStore.totalPages }} for <b>All Products</b></p>
+                <p v-if="props.search" class="mb-6">Search result for {{ props.search }}</p>
+                <p v-else class="mb-6">Page {{ productStore.page }} of {{ productStore.totalPages }} for <b>All Products</b></p>
                 <div class="grid grid-cols-4 grid-flow-row gap-4">
                     <!-- products -->
                     <div v-for="item in productStore.product" :key="item" class="p-6 border-2 shadow-lg rounded-xl min-w-56 w-56">
@@ -117,11 +118,12 @@
 
 <script setup>
 import numeral from 'numeral'
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
 import UserLayout from '../../layouts/UserLayout.vue'
 import { useCategoryStore } from '../../stores/category'
 import { useProductStore } from '../../stores/product'
 
+const props = defineProps(['search'])
 const showDiscount = ref(true)
 const showCategory = ref(true)
 const showBrand = ref(true)
@@ -130,7 +132,10 @@ const showSort = ref(true)
 const categoryStore = useCategoryStore()
 const productStore = useProductStore()
 categoryStore.getCategories()
-productStore.getProductByPageUser(1)
+
+onMounted(() => {
+  categoryStore.getCategories()
+})
 
 const shouldDisplay = (n) => {
   if (productStore.page <= 2) {
@@ -168,5 +173,10 @@ const fetchPage = (page) => {
 
 watchEffect(() => {
   filterProduct()
+  if (props.search) {
+    productStore.searchProduct(props.search)
+  } else {
+    productStore.getProductByPageUser(1)
+  }
 })
 </script>

@@ -97,6 +97,12 @@ const routes = [
     component: Catalog
   },
   {
+    path: '/catalog/search?q=:search',
+    name: 'CatalogSearch',
+    component: Catalog,
+    props: true
+  },
+  {
     path: '/catalog/:id',
     name: 'CategoryProduct',
     component: CategoryProduct,
@@ -111,7 +117,7 @@ const routes = [
     path: '/payment/success',
     name: 'PaymentUserSuccess',
     component: () => import('../views/user/payment/PaymentSuccess.vue')
-  },
+  }
 ]
 
 const router = createRouter({
@@ -124,7 +130,7 @@ router.beforeEach((to, from, next) => {
   const paymentStore = usePaymentStore()
   const { isPaymentCreated } = storeToRefs(paymentStore)
 
-  const isGoToPaymentSuccess = to.name === "PaymentUserSuccess"
+  const isGoToPaymentSuccess = to.name === 'PaymentUserSuccess'
 
   // Auth
   const store = useAuthStore()
@@ -151,8 +157,8 @@ router.beforeEach((to, from, next) => {
     return next({ name: 'Login' })
   }
 
-  if (!isPaymentCreated.value && isGoToPaymentSuccess ) {
-    return next({ name: 'Cart'})
+  if (!isPaymentCreated.value && isGoToPaymentSuccess) {
+    return next({ name: 'Cart' })
   }
 
   next()
