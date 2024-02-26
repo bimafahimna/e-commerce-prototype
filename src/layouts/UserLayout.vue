@@ -1,8 +1,21 @@
 <script setup>
 import { ref } from 'vue'
+import { useCategoryStore } from '../stores/category'
+import { useAuthStore } from '../stores/auth'
+import router from '../router'
 
 const role = ref('user')
+const categoryStore = useCategoryStore()
+const authStore = useAuthStore()
 const showCategories = ref(false)
+const searchQuery = ref('')
+
+const handleSearch = () => {
+  console.log('clicked')
+  if (searchQuery.value) {
+    router.push({ name: 'CatalogSearch', params: { search: searchQuery.value } })
+  }
+}
 
 function toggleCategoriesTrue () {
   showCategories.value = true
@@ -26,11 +39,13 @@ function toggleCategoriesFalse () {
           </h2>
           <div class="flex gap-4 bg-white rounded-2xl">
             <input
+              v-model="searchQuery"
               class="w-[20rem] px-6 py-4 rounded-2xl focus:outline-none"
               type="text"
               placeholder="Search"
             />
             <button
+              @click="handleSearch"
               class="bg-yellow-dark text-white px-8 py-2 rounded-2xl hover:bg-yellow-600"
             >
               Search
@@ -38,10 +53,12 @@ function toggleCategoriesFalse () {
           </div>
         </div>
         <div class="text-white flex gap-12">
-          <router-link class="hover:scale-110 transition-all ease-in-out duration-100" to="/login">
-            <v-icon class="mr-2 scale-125" name="fa-regular-user" />
-            Login
-          </router-link>
+          <div v-if="!authStore.user">
+            <router-link class="hover:scale-110 transition-all ease-in-out duration-100" to="/login">
+              <v-icon class="mr-2 scale-125" name="fa-regular-user" />
+              Login
+            </router-link>
+          </div>
           <router-link class="hover:scale-110 transition-all ease-in-out duration-100" to="/wishlist">
             <v-icon class="mr-2 scale-125" name="bi-heart" /> Wishlist
           </router-link>
@@ -68,10 +85,10 @@ function toggleCategoriesFalse () {
             >
               <!-- loop categories -->
               <ul class="space-y-2">
-                <li
+                <li v-for="item in categoryStore.category" :key="item"
                   class="text-gray-dark hover:text-blue-dark hover:font-semibold"
                 >
-                  <router-link to="/">Category</router-link>
+                  <router-link :to="{name: 'CategoryProduct', params:{id: item.category_id}}">{{ item.name }}</router-link>
                 </li>
               </ul>
             </div>
