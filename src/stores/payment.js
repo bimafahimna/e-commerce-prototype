@@ -6,7 +6,7 @@ export const usePaymentStore = defineStore('payment', () => {
   const payments = ref([])
   const user = JSON.parse(localStorage.getItem('user'))
   const isPaymentCreated = ref(false)
-  
+
   const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, '0')
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
@@ -20,7 +20,7 @@ export const usePaymentStore = defineStore('payment', () => {
     const res = await axios.get(
       `${import.meta.env.VITE_PAYMENT_ENDPOINT}/admin`,
       {
-        headers:{
+        headers: {
           Authorization: 'Bearer ' + user.token
         }
       }
@@ -30,12 +30,12 @@ export const usePaymentStore = defineStore('payment', () => {
       payment_id: item.payment_id,
       cart_id: item.cart_id,
       user_id: item.user_id,
-      username:item.username,
-      total_price:item.total_price,
-      order_item:item.order_item,
+      username: item.username,
+      total_price: item.total_price,
+      order_item: item.order_item,
       payment_option: item.payment_option,
-      payment_date: formatDate(new Date(item.payment_date)),
-      confirmation:item.confirmation,
+      payment_date: formatDate(new Date(item.createdAt)),
+      confirmation: item.confirmation,
       status: item.status
     }))
 
@@ -45,21 +45,21 @@ export const usePaymentStore = defineStore('payment', () => {
   const createPaymentByUser = async (input) => {
     try {
       input.username = user.username
-      isPaymentCreated.value=true
+      isPaymentCreated.value = true
 
       const res = await axios.post(
         `${import.meta.env.VITE_PAYMENT_ENDPOINT}/user`,
         input,
         {
-          headers:{
+          headers: {
             Authorization: 'Bearer ' + user.token
           }
         }
       )
-      
+
       alert('Payment created successfully')
     } catch (err) {
-      isPaymentCreated.value=false
+      isPaymentCreated.value = false
       return err
     }
   }

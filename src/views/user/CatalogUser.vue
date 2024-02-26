@@ -15,7 +15,7 @@
                             </div>
                         </div>
                         <div v-if="showDiscount" class="flex items-center gap-1 px-6 pb-2">
-                            <input v-model="filterDiscount" value="discount" id="discount" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <input v-model="query.filterDiscount" value="discount" id="discount" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                             <label for="discount" class="text-sm">Product on Discount</label>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                         <div v-if="showCategory" class="px-6 pb-2">
                             <div v-for="item in categoryStore.category" :key="item">
                             <div class="flex items-center gap-1 mb-2">
-                                    <input id="category" v-model="filterCategory" :value="item.category_id" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                    <input id="category" v-model="query.filterCategory" :value="item.category_id" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                                     <label for="category" class="text-sm">{{ item.name }}</label>
                                 </div>
                             </div>
@@ -67,11 +67,11 @@
                         </div>
                         <div v-if="showSort" class="px-6 pb-2">
                             <div class="flex items-center gap-1 mb-2">
-                                <input v-model="filterSort" value="desc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                <input v-model="query.filterSort" value="desc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                                 <label for="sort" class="text-sm">Newest</label>
                             </div>
                             <div class="flex items-center gap-1 mb-2">
-                                <input v-model="filterSort" value="asc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                <input v-model="query.filterSort" value="asc" id="sort" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                                 <label for="sort" class="text-sm">Oldest</label>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
 
 <script setup>
 import numeral from 'numeral'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import UserLayout from '../../layouts/UserLayout.vue'
 import { useCategoryStore } from '../../stores/category'
 import { useProductStore } from '../../stores/product'
@@ -142,11 +142,31 @@ const shouldDisplay = (n) => {
   }
 }
 
-const filterCategory = ref('')
-const filterSort = ref('')
-const filterDiscount = ref('')
+const filterProduct = async () => {
+  let queryString = ''
+  if (query.value.filterDiscount) {
+    queryString += `filter=${query.value.filterDiscount}&`
+  }
+  if (query.value.filterSort) {
+    queryString += `sort=${query.value.filterSort}&`
+  }
+  if (query.value.filterCategory) {
+    queryString += `category=${query.value.filterCategory}`
+  }
+  console.log(queryString)
+}
+
+const query = ref({
+  filterSort: '',
+  filterDiscount: '',
+  filterCategory: ''
+})
 
 const fetchPage = (page) => {
   productStore.getProductByPageUser(page)
 }
+
+watchEffect(() => {
+  filterProduct()
+})
 </script>

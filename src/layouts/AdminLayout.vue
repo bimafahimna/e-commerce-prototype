@@ -3,7 +3,7 @@
     <div v-if="role === 'admin'">
         <div class="font-poppins">
             <nav class="py-8 px-20 flex justify-end bg-blue-dark text-white">
-                <p>admin_loggedin</p>
+                <button @click="handleLogout">Logout</button>
             </nav>
             <div class="min-h-screen">
                 <aside class="fixed top-0 left-0 z-40 w-64">
@@ -38,8 +38,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '../stores/auth'
 
 const role = ref('admin')
+const authStore = useAuthStore()
 
 const menuItems = ref(
   [{
@@ -71,4 +73,8 @@ const menuItems = ref(
     route: '/admin/payment'
   }]
 )
+
+const handleLogout = () => {
+  authStore.handleLogout()
+}
 </script>
