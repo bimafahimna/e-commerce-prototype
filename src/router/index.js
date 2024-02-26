@@ -117,7 +117,12 @@ const routes = [
     path: '/payment/success',
     name: 'PaymentUserSuccess',
     component: () => import('../views/user/payment/PaymentSuccess.vue')
-  }
+  },
+  {
+    path: '/wishlist',
+    name: 'Wishlist',
+    component: () => import('../views/user/wishlist/Wishlist.vue')
+  },
 ]
 
 const router = createRouter({

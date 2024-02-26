@@ -206,7 +206,7 @@ const loading = ref(false)
                     <!-- Payment -->
                     <div v-show="paymentStep.payment">
 
-                        <div class="m-2 inline-flex border border-b-2 rounded-md">
+                        <div class="m-2 hidden border border-b-2 rounded-md">
                             <span class="text-xs px-2 cursor-pointer" @click="goToAddress">Back</span>
                         </div>
 
